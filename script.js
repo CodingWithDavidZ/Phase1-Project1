@@ -16,7 +16,7 @@ form.addEventListener("submit", function (e) {
       console.log(data);
 
       //pulled data to use in lists
-      const hireable = `Hireable: ${data.hireable}`;
+      const hireable = `Seeking Employment: ${data.hireable}`;
       const location = `Location: ${data.location}`;
       const fullName = `Name: ${data.name}`;
       const email = `Email: ${data.email}`;
