@@ -24,6 +24,8 @@ form.addEventListener("submit", function (e) {
       const created = `Created: ${data.created_at}`;
       const lastUpdated = `Last update: ${data.updated_at}`;
       const twitterHandle = `Twitter: ${data.twitter_username}`;
+      const lastUpdatedNoTime = lastUpdated.split("T")[0];
+      const createdNoTime = created.split("T")[0];
 
       //display picture that when click, redirects to thier github
       document.getElementById("searchResult").innerHTML = `
@@ -39,7 +41,12 @@ form.addEventListener("submit", function (e) {
       str += "</ul>";
       document.getElementById("moreInfo1").innerHTML = str;
 
-      const moreInfoArray = [created, lastUpdated, repoCount, hireable];
+      const moreInfoArray = [
+        createdNoTime,
+        lastUpdatedNoTime,
+        repoCount,
+        hireable,
+      ];
       var str2 = "<ul>";
       moreInfoArray.forEach(function (slide) {
         str2 += "<li>" + slide + "</li>";
