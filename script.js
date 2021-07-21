@@ -1,4 +1,8 @@
 const form = document.getElementById("searchForm");
+const toggle = document.getElementsByClassName("switch");
+toggle.addEventListener("click", function () {
+  alert("clicked");
+});
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -15,6 +19,11 @@ form.addEventListener("submit", function (e) {
     .then((data) => {
       console.log(data);
 
+      //display picture that when click, redirects to thier github
+      document.getElementById("searchResult").innerHTML = `
+        <a target="_blank" href="https://www.github.com/${originalName}"> <img src= "${data.avatar_url}"/></a>
+      `;
+
       //pulled data to use in lists
       const hireable = `Seeking Employment: ${data.hireable}`;
       const location = `Location: ${data.location}`;
@@ -22,15 +31,18 @@ form.addEventListener("submit", function (e) {
       const email = `Email: ${data.email}`;
       const repoCount = `Repo Count: ${data.public_repos}`;
       const created = `Created: ${data.created_at}`;
-      const lastUpdated = `Last update: ${data.updated_at}`;
-      const twitterHandle = `Twitter: ${data.twitter_username}`;
-      const lastUpdatedNoTime = lastUpdated.split("T")[0];
       const createdNoTime = created.split("T")[0];
+      const lastUpdated = `Last update: ${data.updated_at}`;
+      const lastUpdatedNoTime = lastUpdated.split("T")[0];
+      const twitterHandle = `Twitter: ${data.twitter_username}`;
 
-      //display picture that when click, redirects to thier github
-      document.getElementById("searchResult").innerHTML = `
-        <a target="_blank" href="https://www.github.com/${originalName}"> <img src= "${data.avatar_url}"/></a>
-      `;
+      //display saveToggle
+      const div = document.getElementById("saveToggle");
+      if ((div.style.visibility = "hidden")) {
+        div.style.visibility = "visible";
+      } else {
+        div.style.visibility = "hidden";
+      }
 
       const basicInfoArray = [fullName, location, email, twitterHandle];
       var str = "<ul>";
