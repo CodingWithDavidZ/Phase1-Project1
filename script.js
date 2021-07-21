@@ -1,8 +1,8 @@
 const form = document.getElementById("searchForm");
 const toggle = document.getElementsByClassName("switch");
-toggle.addEventListener("click", function () {
-  alert("clicked");
-});
+// toggle.addEventListener("click", function () {
+//   alert("clicked");
+// });
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
