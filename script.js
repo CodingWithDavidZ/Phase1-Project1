@@ -1,8 +1,8 @@
 const form = document.getElementById("searchForm");
-const toggle = document.getElementsByClassName("switch");
-// toggle.addEventListener("click", function () {
-//   alert("clicked");
-// });
+const toggle = document.getElementsByClassName("switch")[0];
+toggle.addEventListener("click", function () {
+  alert("clicked");
+});
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -38,10 +38,10 @@ form.addEventListener("submit", function (e) {
 
       //display saveToggle
       const div = document.getElementById("saveToggle");
-      if ((div.style.visibility = "hidden")) {
-        div.style.visibility = "visible";
+      if ((div.style.display = "none")) {
+        div.style.display = "block";
       } else {
-        div.style.visibility = "hidden";
+        div.style.display = "none";
       }
 
       const basicInfoArray = [fullName, location, email, twitterHandle];
