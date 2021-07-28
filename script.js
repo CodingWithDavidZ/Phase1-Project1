@@ -1,5 +1,43 @@
 const form = document.getElementById("searchForm");
-const toggle = document.getElementsByClassName("switch")[0];
+const toggle = document.getElementById("sliderSwitch");
+const saved = document.getElementById("savedSearches");
+
+function fetchSaved() {
+  fetch("http://localhost:3000/saved")
+    .then((res) => res.json())
+    .then((savedData) => {
+      console.log(savedData);
+      const html = savedData
+        .slice(1, 51)
+        .map((data) => {
+          return `
+          
+          <p id=pTag${data.id}> <a target="_blank" href="${data.url}"><img src="${data.picture}" alt="${data.id}" width="100" height="100"/></a><button class="btn btn-link" id="removeButton${data.id}">Remove</button></p>`;
+        })
+        .join("");
+      saved.innerHTML = html;
+      savedData.slice(1, 51).map((data) => {
+        document
+          .getElementById(`removeButton${data.id}`)
+          .addEventListener("click", (e) => {
+            fetch(`http://localhost:3000/saved/${data.id}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      //Add Event listener for remove button
+      //Abandoned the remove button for now because I am stuck and unable to get help.
+      //I need to finish the Minimally Viable Product asap so I will make an easier event listener to check the box
+    });
+}
+
+fetchSaved();
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -13,12 +51,15 @@ form.addEventListener("submit", function (e) {
   // api intergration
   fetch("https://api.github.com/users/" + originalName)
     .then((result) => result.json())
+    // if(!result.ok){
+    //     alert("User not found");
+    // }
     .then((data) => {
       console.log(data);
 
       //display picture that when click, redirects to thier github
       document.getElementById("searchResult").innerHTML = `
-        <a target="_blank" href="https://www.github.com/${originalName}"> <img src= "${data.avatar_url}"/></a>
+        <a target="_blank" href="https://www.github.com/${originalName}"> <img src= "${data.avatar_url}" width="333" height="333"/></a>
       `;
 
       //pulled data to use in lists
@@ -32,7 +73,8 @@ form.addEventListener("submit", function (e) {
       const lastUpdated = `Last update: ${data.updated_at}`;
       const lastUpdatedNoTime = lastUpdated.split("T")[0];
       const twitterHandle = `Twitter: ${data.twitter_username}`;
-      const userURL = `${data.html_url}`;
+      const userURL = data.html_url;
+      const userAvatar = data.avatar_url;
 
       //display saveToggle
       const div = document.getElementById("saveToggle");
@@ -67,8 +109,13 @@ form.addEventListener("submit", function (e) {
       toggle.addEventListener("click", function () {
         fetch("http://localhost:3000/saved", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
           body: JSON.stringify({
             url: userURL,
+            picture: userAvatar,
           }),
         });
       });
